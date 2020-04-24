@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="shoppingListApp.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Comic+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <h1>Shopping List App</h1>
+        <div class="divOptions">
+            <button @click="() => this.filterShowBought = null" v-bind:class="{active: filterShowBought === null}" class="all">All</button> |
+            <button @click="() => this.filterShowBought = true" v-bind:class="{active: filterShowBought === true}" class="bought">Bought</button> |
+            <button @click="() => this.filterShowBought = false" v-bind:class="{active: filterShowBought === false}" class="not_bought">Not bought</button>
+        </div>
+
+        <table>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th></th>
+                <th>Price</th>
+            </tr>
+
+            <tr v-for="(product, index) in products" v-if="shouldProductDisplay(product.productBought)"> 
+                <td class="checkboxTD">
+                    <label for="checkbox"></label>
+                    <input type="checkbox" v-model="product.productBought">
+                </td>
+                <td>
+                    {{product.name}}
+                </td>
+                <td class="checkboxTD">
+                    <label for="checkbox"></label>
+                    <input type="checkbox" class="checkbox" v-model="product.isChecked">
+                </td>
+                <td>
+                    <input type="number" v-bind:disabled="!product.isChecked" class="addProductPrize" v-model="product.price">
+                </td>
+                <td>
+                    <button @click="deleteItem(index)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                </td>
+                <td>
+                    <input type="text" class="addNewProductInput" v-model.lazy="inputDataModel">
+                </td>
+                <td>
+                    <button type="submit" class="addNewProductButtonHandler" @click='addNewProduct()'>Add</button>
+                </td>
+                <td>
+                    <button class="sortButton" @click="sortAllNames">Sort by name</button>
+                </td>
+                <td>
+                    <button class="sortButton" @click="sortAllPrices">Sort by price</button>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="result">
+            <p>Zakupiono {{listOfCheckedElement}} z {{products.length}} za {{calculatePrice}} zł</p>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="shoppingListApp.js"></script>
+</body>
+</html>
